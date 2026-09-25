@@ -38,10 +38,15 @@ struct ContentView: View {
         .onChange(of: spotify.snapshot) { track in
             if let track {
                 session.useSpotify(track)
-                if driveMode.isRunning && !session.liveActivityIsRunning {
-                    session.startLiveActivity()
-                }
+                startLiveActivityForCarPlayIfNeeded()
             }
+        }
+        .onAppear { startLiveActivityForCarPlayIfNeeded() }
+        .onChange(of: driveMode.isCarPlayConnected) { _ in
+            startLiveActivityForCarPlayIfNeeded()
+        }
+        .onChange(of: driveMode.autoStartLiveActivityOnCarPlay) { _ in
+            startLiveActivityForCarPlayIfNeeded()
         }
         .sheet(isPresented: $showingSettings) {
             SettingsView()
@@ -126,6 +131,13 @@ struct ContentView: View {
             Color(uiColor: albumColor.playerSurfaceColor(brightnessMultiplier: 0.76)),
             Color(uiColor: albumColor.playerSurfaceColor(brightnessMultiplier: 0.34))
         ]
+    }
+
+    private func startLiveActivityForCarPlayIfNeeded() {
+        guard spotify.snapshot != nil,
+              !session.liveActivityIsRunning,
+              driveMode.isRunning || driveMode.shouldStartLiveActivityForCarPlay else { return }
+        session.startLiveActivity()
     }
 
     private var configurationCard: some View {
@@ -375,6 +387,8 @@ private struct SettingsView: View {
                             }
                         }
                     ))
+
+                    Toggle("Iniciar ao conectar CarPlay", isOn: $driveMode.autoStartLiveActivityOnCarPlay)
                 }
                 Section("Aparência da letra") {
                     Picker("Tamanho da fonte", selection: $lyricsFontScale) {

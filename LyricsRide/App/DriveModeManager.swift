@@ -1,5 +1,6 @@
 import CoreLocation
 import Foundation
+import UIKit
 
 /// Keeps an opt-in driving session alive while the iPhone is locked, using a
 /// deliberately low-power location session. Location fixes are discarded;
@@ -8,17 +9,58 @@ import Foundation
 final class DriveModeManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published private(set) var isRunning = false
     @Published private(set) var status = "Desativado"
+    @Published private(set) var isCarPlayConnected = false
+    @Published var autoStartLiveActivityOnCarPlay: Bool {
+        didSet { UserDefaults.standard.set(autoStartLiveActivityOnCarPlay, forKey: "autoStartLiveActivityOnCarPlay") }
+    }
 
     private let locationManager = CLLocationManager()
     private var wantsRunning = false
+    private var screenObservers: [NSObjectProtocol] = []
+
+    var shouldStartLiveActivityForCarPlay: Bool {
+        autoStartLiveActivityOnCarPlay && isCarPlayConnected
+    }
 
     override init() {
+        autoStartLiveActivityOnCarPlay = UserDefaults.standard.object(forKey: "autoStartLiveActivityOnCarPlay") as? Bool ?? true
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.distanceFilter = 1_000
         locationManager.activityType = .automotiveNavigation
         locationManager.pausesLocationUpdatesAutomatically = false
+
+        // A Live Activity is displayed on CarPlay's Dashboard without requiring
+        // this app to draw its own CarPlay UI. Watch scene connections so an
+        // already-running app can react the moment the car connects.
+        screenObservers = [
+            NotificationCenter.default.addObserver(
+                forName: UIScene.willConnectNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                Task { @MainActor in self?.refreshCarPlayConnection() }
+            },
+            NotificationCenter.default.addObserver(
+                forName: UIScene.didDisconnectNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                Task { @MainActor in self?.refreshCarPlayConnection() }
+            }
+        ]
+        refreshCarPlayConnection()
+    }
+
+    deinit {
+        screenObservers.forEach(NotificationCenter.default.removeObserver)
+    }
+
+    func refreshCarPlayConnection() {
+        isCarPlayConnected = UIScreen.screens.contains {
+            $0.traitCollection.userInterfaceIdiom == .carPlay
+        }
     }
 
     func start() {
