@@ -340,41 +340,27 @@ private struct SettingsView: View {
                     ))
                 }
                 Section("Ícone do app") {
-                    HStack(alignment: .top, spacing: 12) {
-                        ForEach(AppIconChoice.allCases) { icon in
-                            Button { appIcon = icon } label: {
-                                VStack(spacing: 8) {
-                                    ZStack(alignment: .topTrailing) {
-                                        Image(icon.previewAssetName)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 64, height: 64)
-                                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    ForEach(AppIconChoice.allCases) { icon in
+                        Button { appIcon = icon } label: {
+                            HStack(spacing: 14) {
+                                Image(icon.previewAssetName)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 52, height: 52)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-                                        if appIcon == icon {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .font(.title3)
-                                                .foregroundStyle(.blue, .white)
-                                                .offset(x: 7, y: -7)
-                                        }
-                                    }
-                                    Text(icon.title)
-                                        .font(.subheadline.weight(.medium))
-                                        .foregroundStyle(.primary)
+                                Text(icon.title)
+                                    .foregroundStyle(.primary)
+
+                                Spacer()
+
+                                if appIcon == icon {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundStyle(.blue)
                                 }
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 8)
-                                .background(
-                                    appIcon == icon ? Color.accentColor.opacity(0.12) : Color.clear,
-                                    in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                )
-                                .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                             }
                         }
                     }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 4)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
             }
             .navigationTitle("Configurações")
