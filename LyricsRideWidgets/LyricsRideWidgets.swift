@@ -166,11 +166,11 @@ private struct LockScreenLyricsView: View {
             if family == .small {
                 CarPlayLyricsView(state: state)
             } else {
-                LyricsTrioView(state: state)
-                    // Keep the Lock Screen card from jumping in height as a
-                    // lyric changes from one line to two lines. iOS still owns
-                    // the outer Live Activity size and may cap it if needed.
-                    .frame(maxWidth: .infinity, minHeight: 136, maxHeight: 136, alignment: .leading)
+                LockScreenLyricsContent(state: state)
+                    // The lyric chooses its natural height. This avoids clipping
+                    // words just to hold the card at a fixed height; iOS still
+                    // determines the final available Live Activity space.
+                    .frame(maxWidth: .infinity, minHeight: 112, alignment: .leading)
                     .padding(.horizontal, 18)
                     .padding(.vertical, 8)
             }
@@ -203,6 +203,44 @@ private struct CarPlayLyricsView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)
         .animation(.easeInOut(duration: 0.45), value: state.lyric)
+    }
+}
+
+@available(iOS 18.0, *)
+private struct LockScreenLyricsContent: View {
+    let state: LyricsActivityAttributes.ContentState
+
+    private var highContrast: Bool { state.highContrast ?? false }
+    private var showsThreeLines: Bool { state.displayLineCount != 1 }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if showsThreeLines, let previous = state.previousLyric, !previous.isEmpty {
+                lyricText(previous, size: 18, color: .white.opacity(highContrast ? 0.82 : 0.52))
+                    .contentTransition(.opacity)
+            }
+
+            lyricText(state.lyric, size: 26, color: .white, weight: .bold)
+                .id(state.lyricTimestamp ?? state.position)
+                .contentTransition(.opacity)
+
+            if showsThreeLines, let next = state.nextLyric, !next.isEmpty {
+                lyricText(next, size: 18, color: .white.opacity(highContrast ? 0.9 : 0.68))
+                    .id(state.nextTimestamp.map { String(describing: $0) } ?? state.nextLyric)
+                    .transition(.push(from: .bottom).combined(with: .opacity))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.smooth(duration: 0.45), value: state.lyricTimestamp ?? state.position)
+    }
+
+    private func lyricText(_ text: String, size: CGFloat, color: Color, weight: Font.Weight = .medium) -> some View {
+        Text(text)
+            .font(.system(size: size, weight: weight))
+            .foregroundStyle(color)
+            // Do not set lineLimit or a fixed height: every word remains visible.
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

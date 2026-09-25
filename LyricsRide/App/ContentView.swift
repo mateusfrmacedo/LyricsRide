@@ -6,14 +6,21 @@ struct ContentView: View {
     @EnvironmentObject private var spotify: SpotifyManager
     @EnvironmentObject private var driveMode: DriveModeManager
     @State private var showingSettings = false
+    @AppStorage("lyricsFontScale") private var lyricsFontScale = 1.0
+    @AppStorage("highContrastLyrics") private var highContrastLyrics = false
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
                 nowPlaying
                 if spotify.snapshot != nil {
-                    if !session.lyrics.isEmpty {
+                    switch session.lyricsAvailability {
+                    case .available:
                         lyricsList
+                    case .loading, .idle:
+                        lyricsLoadingCard
+                    case .unavailable:
+                        lyricsUnavailableCard
                     }
                 }
             }
@@ -270,10 +277,8 @@ struct ContentView: View {
                         ForEach(session.lyrics) { line in
                             let isCurrent = line == session.currentLine
                             Text(line.text)
-                                .font(.system(size: isCurrent ? 26 : 20, weight: isCurrent ? .bold : .medium))
-                                .foregroundStyle(isCurrent ? Color.primary : Color.secondary)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.65)
+                                .font(.system(size: (isCurrent ? 26 : 20) * lyricsFontScale, weight: isCurrent ? .bold : .medium))
+                                .foregroundStyle(isCurrent ? Color.primary : (highContrastLyrics ? Color.primary.opacity(0.78) : Color.secondary))
                                 .fixedSize(horizontal: false, vertical: true)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 10)
@@ -300,6 +305,35 @@ struct ContentView: View {
             }
         }
     }
+
+    private var lyricsLoadingCard: some View {
+        VStack(spacing: 12) {
+            ProgressView()
+            Text("Buscando letra sincronizada…")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+    }
+
+    private var lyricsUnavailableCard: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "music.note.slash")
+                .font(.system(size: 32))
+                .foregroundStyle(.secondary)
+            Text("Letra sincronizada indisponível")
+                .font(.headline)
+            Text("Esta música ainda não possui uma letra com marcações de tempo.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(24)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+    }
 }
 
 private struct SettingsView: View {
@@ -309,6 +343,9 @@ private struct SettingsView: View {
     @EnvironmentObject private var driveMode: DriveModeManager
     @State private var appIcon = AppIconChoice.current
     @State private var iconError: String?
+    @AppStorage("lyricsFontScale") private var lyricsFontScale = 1.0
+    @AppStorage("liveActivityLineCount") private var liveActivityLineCount = 3
+    @AppStorage("highContrastLyrics") private var highContrastLyrics = false
 
     var body: some View {
         NavigationStack {
@@ -338,6 +375,20 @@ private struct SettingsView: View {
                             }
                         }
                     ))
+                }
+                Section("Aparência da letra") {
+                    Picker("Tamanho da fonte", selection: $lyricsFontScale) {
+                        Text("Pequena").tag(0.85)
+                        Text("Média").tag(1.0)
+                        Text("Grande").tag(1.15)
+                    }
+
+                    Picker("Linhas na Live Activity", selection: $liveActivityLineCount) {
+                        Text("1 linha").tag(1)
+                        Text("3 linhas").tag(3)
+                    }
+
+                    Toggle("Alto contraste", isOn: $highContrastLyrics)
                 }
                 Section("Ícone do app") {
                     ForEach(AppIconChoice.allCases) { icon in
@@ -374,6 +425,15 @@ private struct SettingsView: View {
             UIApplication.shared.setAlternateIconName(newIcon.alternateIconName) { error in
                 if let error { iconError = error.localizedDescription }
             }
+        }
+        .onAppear {
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+        }
+        .onChange(of: liveActivityLineCount) { _ in
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+        }
+        .onChange(of: highContrastLyrics) { _ in
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
         }
         .alert("Não foi possível trocar o ícone", isPresented: Binding(
             get: { iconError != nil },

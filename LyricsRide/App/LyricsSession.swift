@@ -2,12 +2,20 @@ import Foundation
 
 @MainActor
 final class LyricsSession: ObservableObject {
+    enum LyricsAvailability: Equatable {
+        case idle
+        case loading
+        case available
+        case unavailable
+    }
+
     @Published private(set) var title = ""
     @Published private(set) var artist = ""
     @Published private(set) var lyrics: [LyricLine] = []
     @Published private(set) var position: TimeInterval = 0
     @Published private(set) var isPlaying = false
     @Published private(set) var liveActivityIsRunning = false
+    @Published private(set) var lyricsAvailability: LyricsAvailability = .idle
     @Published var message = "Pronto para testar"
 
     private let liveActivity = LiveActivityController()
@@ -18,6 +26,8 @@ final class LyricsSession: ObservableObject {
     private var activeSpotifyTrackID: String?
     private var lastPublishedSignature: ActivitySignature?
     private var lastWidgetSignature: ActivitySignature?
+    private var liveActivityLineCount = UserDefaults.standard.integer(forKey: "liveActivityLineCount") == 1 ? 1 : 3
+    private var highContrastLyrics = UserDefaults.standard.bool(forKey: "highContrastLyrics")
 
     init() {
         liveActivityIsRunning = liveActivity.isRunning
@@ -41,6 +51,7 @@ final class LyricsSession: ObservableObject {
         title = track.title
         artist = track.artist
         lyrics = []
+        lyricsAvailability = .loading
         lastPublishedSignature = nil
         reconcileClock(with: track, force: true)
 
@@ -49,20 +60,30 @@ final class LyricsSession: ObservableObject {
                 let fetchedLyrics = try await LRCLibService.lyrics(track: track.title, artist: track.artist, duration: track.duration)
                 guard let self, self.activeSpotifyTrackID == trackID else { return }
                 self.lyrics = fetchedLyrics
+                self.lyricsAvailability = fetchedLyrics.isEmpty ? .unavailable : .available
                 self.lastPublishedSignature = nil
                 self.reconcileClock(with: track, force: true)
                 self.message = "Letra sincronizada encontrada no LRCLIB"
             } catch {
                 guard let self, self.activeSpotifyTrackID == trackID else { return }
+                self.lyricsAvailability = .unavailable
                 self.message = "Letra sincronizada não encontrada para esta faixa"
             }
         }
     }
 
+    func updateLyricsAppearance(lineCount: Int, highContrast: Bool) {
+        liveActivityLineCount = lineCount == 1 ? 1 : 3
+        highContrastLyrics = highContrast
+        UserDefaults.standard.set(liveActivityLineCount, forKey: "liveActivityLineCount")
+        UserDefaults.standard.set(highContrast, forKey: "highContrastLyrics")
+        Task { await publishLiveActivity(force: true) }
+    }
+
     func startLiveActivity() {
         Task {
             do {
-                try await liveActivity.start(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position)
+                try await liveActivity.start(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
                 liveActivityIsRunning = true
                 lastPublishedSignature = activitySignature
                 message = "Live Activity iniciada"
@@ -170,7 +191,7 @@ final class LyricsSession: ObservableObject {
 
         guard liveActivityIsRunning else { return }
         guard force || signature != lastPublishedSignature else { return }
-        await liveActivity.update(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, isPlaying: isPlaying)
+        await liveActivity.update(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, isPlaying: isPlaying, lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
         lastPublishedSignature = signature
     }
 }

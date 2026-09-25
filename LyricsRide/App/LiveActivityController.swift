@@ -15,7 +15,7 @@ final class LiveActivityController {
 
     var isRunning: Bool { activity != nil }
 
-    func start(track: String, artist: String, previousLine: LyricLine?, line: LyricLine, nextLine: LyricLine?, position: TimeInterval) async throws {
+    func start(track: String, artist: String, previousLine: LyricLine?, line: LyricLine, nextLine: LyricLine?, position: TimeInterval, lineCount: Int, highContrast: Bool) async throws {
         await end()
         let attributes = LyricsActivityAttributes(sessionID: UUID().uuidString)
         let state = LyricsActivityAttributes.ContentState(
@@ -29,7 +29,9 @@ final class LiveActivityController {
             nextLyric: nextLine?.text,
             nextTimestamp: nextLine?.timestamp,
             position: position,
-            isPlaying: true
+            isPlaying: true,
+            displayLineCount: lineCount,
+            highContrast: highContrast
         )
         activity = try Activity.request(
             attributes: attributes,
@@ -39,7 +41,7 @@ final class LiveActivityController {
         if let activity { watch(activity) }
     }
 
-    func update(track: String, artist: String, previousLine: LyricLine?, line: LyricLine, nextLine: LyricLine?, position: TimeInterval, isPlaying: Bool) async {
+    func update(track: String, artist: String, previousLine: LyricLine?, line: LyricLine, nextLine: LyricLine?, position: TimeInterval, isPlaying: Bool, lineCount: Int, highContrast: Bool) async {
         guard let activity else { return }
         let state = LyricsActivityAttributes.ContentState(
             trackTitle: track,
@@ -52,7 +54,9 @@ final class LiveActivityController {
             nextLyric: nextLine?.text,
             nextTimestamp: nextLine?.timestamp,
             position: position,
-            isPlaying: isPlaying
+            isPlaying: isPlaying,
+            displayLineCount: lineCount,
+            highContrast: highContrast
         )
         await activity.update(ActivityContent(state: state, staleDate: nil))
     }

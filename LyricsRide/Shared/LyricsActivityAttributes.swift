@@ -16,6 +16,10 @@ struct LyricsActivityAttributes: ActivityAttributes {
         var nextTimestamp: Double?
         var position: Double
         var isPlaying: Bool
+        /// Optional so an activity already on screen from an older app version
+        /// can still be decoded after the extension is updated.
+        var displayLineCount: Int?
+        var highContrast: Bool?
     }
 
     var sessionID: String
