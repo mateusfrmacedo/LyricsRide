@@ -249,29 +249,18 @@ private struct LockScreenLyricsContent: View {
     @ViewBuilder
     private func lyricStack(lineCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
+            // The stable IDs make a lyric keep its view while it moves from
+            // “next” to “current” and then to “previous”. It produces one
+            // continuous upward rail instead of three overlapping replacements.
+            ForEach(lyricRows(for: lineCount)) { row in
                 RisingLyricText(
-                    text: previous,
-                    identity: "previous-\(state.previousTimestamp ?? -1)-\(previous)",
-                    size: 18 * fontScale,
-                    color: .white.opacity(highContrast ? 0.82 : 0.52)
-                )
-            }
-
-            RisingLyricText(
-                text: state.lyric,
-                identity: "current-\(state.lyricTimestamp ?? state.position)-\(state.lyric)",
-                size: 26 * fontScale,
-                color: .white,
-                weight: .bold
-            )
-
-            if lineCount >= 2, let next = state.nextLyric, !next.isEmpty {
-                RisingLyricText(
-                    text: next,
-                    identity: "next-\(state.nextTimestamp ?? -1)-\(next)",
-                    size: 18 * fontScale,
-                    color: .white.opacity(highContrast ? 0.9 : 0.68)
+                    text: row.text,
+                    identity: row.id,
+                    size: (row.isCurrent ? 26 : 18) * fontScale,
+                    color: row.isCurrent
+                        ? .white
+                        : .white.opacity(highContrast ? (row.isUpcoming ? 0.9 : 0.82) : (row.isUpcoming ? 0.68 : 0.52)),
+                    weight: row.isCurrent ? .bold : .medium
                 )
             }
         }
@@ -279,6 +268,37 @@ private struct LockScreenLyricsContent: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
+    private func lyricRows(for lineCount: Int) -> [LockScreenLyricRow] {
+        var rows: [LockScreenLyricRow] = []
+        if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
+            rows.append(.init(text: previous, timestamp: state.previousTimestamp, role: .previous))
+        }
+        rows.append(.init(text: state.lyric, timestamp: state.lyricTimestamp, role: .current))
+        if lineCount >= 2, let next = state.nextLyric, !next.isEmpty {
+            rows.append(.init(text: next, timestamp: state.nextTimestamp, role: .next))
+        }
+        return rows
+    }
+
+}
+
+@available(iOS 18.0, *)
+private struct LockScreenLyricRow: Identifiable {
+    enum Role {
+        case previous
+        case current
+        case next
+    }
+
+    let text: String
+    let timestamp: Double?
+    let role: Role
+
+    // A timestamp is stable across the three roles, so the same phrase moves
+    // upward instead of being destroyed and recreated at each lyric change.
+    var id: String { timestamp.map { String(describing: $0) } ?? text }
+    var isCurrent: Bool { role == .current }
+    var isUpcoming: Bool { role == .next }
 }
 
 @available(iOS 18.0, *)
@@ -296,7 +316,6 @@ private struct RisingLyricText: View {
             // Do not set lineLimit or a fixed height: every word remains visible.
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .id(identity)
             .transition(
                 .asymmetric(
                     insertion: .move(edge: .bottom).combined(with: .opacity),
@@ -304,7 +323,6 @@ private struct RisingLyricText: View {
                 )
             )
             .contentTransition(.opacity)
-            .animation(.spring(response: 0.62, dampingFraction: 0.9), value: identity)
     }
 }
 
