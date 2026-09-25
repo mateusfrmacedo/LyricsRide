@@ -232,6 +232,22 @@ private struct LockScreenLyricsContent: View {
     }
 
     var body: some View {
+        ViewThatFits(in: .vertical) {
+            if lineCount == 3 {
+                lyricStack(lineCount: 3)
+            }
+            if lineCount >= 2 {
+                lyricStack(lineCount: 2)
+            }
+            lyricStack(lineCount: 1)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
+        .animation(.spring(response: 0.62, dampingFraction: 0.9), value: state.lyricTimestamp ?? state.position)
+    }
+
+    @ViewBuilder
+    private func lyricStack(lineCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
                 RisingLyricText(
@@ -261,7 +277,6 @@ private struct LockScreenLyricsContent: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
-        .animation(.spring(response: 0.62, dampingFraction: 0.9), value: state.lyricTimestamp ?? state.position)
     }
 
 }
