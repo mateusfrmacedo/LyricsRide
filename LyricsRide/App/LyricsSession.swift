@@ -41,7 +41,7 @@ final class LyricsSession: ObservableObject {
     /// Spotify reports the real playhead whenever its player state changes.
     /// We use that as the source of truth and interpolate only between reports.
     func useSpotify(_ track: SpotifySnapshot) {
-        let trackID = "\(track.title)|\(track.artist)|\(track.duration)"
+        let trackID = track.spotifyID.isEmpty ? "\(track.title)|\(track.artist)|\(track.duration)" : track.spotifyID
         guard trackID != activeSpotifyTrackID else {
             reconcileClock(with: track)
             return
@@ -58,7 +58,7 @@ final class LyricsSession: ObservableObject {
 
         lyricsFetchTask = Task { [weak self] in
             do {
-                let fetchedLyrics = try await LRCLibService.lyrics(track: track.title, artist: track.artist, duration: track.duration)
+                let fetchedLyrics = try await LRCLibService.lyrics(for: track)
                 guard let self, self.activeSpotifyTrackID == trackID else { return }
                 self.lyrics = fetchedLyrics
                 self.lyricsAvailability = fetchedLyrics.isEmpty ? .unavailable : .available

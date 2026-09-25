@@ -177,8 +177,11 @@ final class SpotifyManager: NSObject, ObservableObject {
                     return Self.idlePollInterval
                 }
                 let newSnapshot = SpotifySnapshot(
+                    spotifyID: track.id,
                     title: track.name,
                     artist: track.artists.first?.name ?? "",
+                    album: track.album?.name,
+                    isrc: track.externalIDs?.isrc,
                     duration: Double(track.durationMS) / 1_000,
                     position: Double(playback.progressMS ?? 0) / 1_000,
                     isPaused: !(playback.isPlaying ?? false),
@@ -372,8 +375,11 @@ extension UIColor {
 }
 
 struct SpotifySnapshot: Equatable {
+    let spotifyID: String
     let title: String
     let artist: String
+    let album: String?
+    let isrc: String?
     let duration: TimeInterval
     let position: TimeInterval
     let isPaused: Bool
@@ -462,17 +468,22 @@ private struct SpotifyPlaybackResponse: Decodable {
     struct Artist: Decodable { let name: String }
     struct Album: Decodable {
         struct Image: Decodable { let url: String }
+        let name: String
         let images: [Image]
     }
+    struct ExternalIDs: Decodable { let isrc: String? }
     struct Track: Decodable {
+        let id: String
         let name: String
         let durationMS: Int
         let artists: [Artist]
         let album: Album?
+        let externalIDs: ExternalIDs?
 
         enum CodingKeys: String, CodingKey {
-            case name, artists, album
+            case id, name, artists, album
             case durationMS = "duration_ms"
+            case externalIDs = "external_ids"
         }
     }
 
