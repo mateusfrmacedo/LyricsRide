@@ -28,6 +28,7 @@ final class LyricsSession: ObservableObject {
     private var lastWidgetSignature: ActivitySignature?
     private var liveActivityLineCount = UserDefaults.standard.integer(forKey: "liveActivityLineCount") == 1 ? 1 : 3
     private var highContrastLyrics = UserDefaults.standard.bool(forKey: "highContrastLyrics")
+    private var lyricsFontScale = UserDefaults.standard.object(forKey: "lyricsFontScale") as? Double ?? 1.0
 
     init() {
         liveActivityIsRunning = liveActivity.isRunning
@@ -72,18 +73,20 @@ final class LyricsSession: ObservableObject {
         }
     }
 
-    func updateLyricsAppearance(lineCount: Int, highContrast: Bool) {
-        liveActivityLineCount = lineCount == 1 ? 1 : 3
+    func updateLyricsAppearance(lineCount: Int, fontScale: Double, highContrast: Bool) {
+        liveActivityLineCount = min(max(lineCount, 1), 3)
         highContrastLyrics = highContrast
+        lyricsFontScale = min(max(fontScale, 0.85), 1.15)
         UserDefaults.standard.set(liveActivityLineCount, forKey: "liveActivityLineCount")
         UserDefaults.standard.set(highContrast, forKey: "highContrastLyrics")
+        UserDefaults.standard.set(lyricsFontScale, forKey: "lyricsFontScale")
         Task { await publishLiveActivity(force: true) }
     }
 
     func startLiveActivity() {
         Task {
             do {
-                try await liveActivity.start(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+                try await liveActivity.start(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
                 liveActivityIsRunning = true
                 lastPublishedSignature = activitySignature
                 message = "Live Activity iniciada"
@@ -191,7 +194,7 @@ final class LyricsSession: ObservableObject {
 
         guard liveActivityIsRunning else { return }
         guard force || signature != lastPublishedSignature else { return }
-        await liveActivity.update(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, isPlaying: isPlaying, lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+        await liveActivity.update(track: title, artist: artist, previousLine: previousLine, line: currentLine, nextLine: nextLine, position: position, isPlaying: isPlaying, lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
         lastPublishedSignature = signature
     }
 }

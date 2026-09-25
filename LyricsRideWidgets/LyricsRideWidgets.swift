@@ -211,21 +211,22 @@ private struct LockScreenLyricsContent: View {
     let state: LyricsActivityAttributes.ContentState
 
     private var highContrast: Bool { state.highContrast ?? false }
-    private var showsThreeLines: Bool { state.displayLineCount != 1 }
+    private var lineCount: Int { min(max(state.displayLineCount ?? 3, 1), 3) }
+    private var fontScale: CGFloat { CGFloat(state.fontScale ?? 1.0) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if showsThreeLines, let previous = state.previousLyric, !previous.isEmpty {
-                lyricText(previous, size: 18, color: .white.opacity(highContrast ? 0.82 : 0.52))
+            if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
+                lyricText(previous, size: 18 * fontScale, color: .white.opacity(highContrast ? 0.82 : 0.52))
                     .contentTransition(.opacity)
             }
 
-            lyricText(state.lyric, size: 26, color: .white, weight: .bold)
+            lyricText(state.lyric, size: 26 * fontScale, color: .white, weight: .bold)
                 .id(state.lyricTimestamp ?? state.position)
                 .contentTransition(.opacity)
 
-            if showsThreeLines, let next = state.nextLyric, !next.isEmpty {
-                lyricText(next, size: 18, color: .white.opacity(highContrast ? 0.9 : 0.68))
+            if lineCount >= 2, let next = state.nextLyric, !next.isEmpty {
+                lyricText(next, size: 18 * fontScale, color: .white.opacity(highContrast ? 0.9 : 0.68))
                     .id(state.nextTimestamp.map { String(describing: $0) } ?? state.nextLyric)
                     .transition(.push(from: .bottom).combined(with: .opacity))
             }

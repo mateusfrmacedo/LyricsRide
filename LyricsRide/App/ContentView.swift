@@ -385,6 +385,7 @@ private struct SettingsView: View {
 
                     Picker("Linhas na Live Activity", selection: $liveActivityLineCount) {
                         Text("1 linha").tag(1)
+                        Text("2 linhas").tag(2)
                         Text("3 linhas").tag(3)
                     }
 
@@ -427,13 +428,16 @@ private struct SettingsView: View {
             }
         }
         .onAppear {
-            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
         }
         .onChange(of: liveActivityLineCount) { _ in
-            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
+        }
+        .onChange(of: lyricsFontScale) { _ in
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
         }
         .onChange(of: highContrastLyrics) { _ in
-            session.updateLyricsAppearance(lineCount: liveActivityLineCount, highContrast: highContrastLyrics)
+            session.updateLyricsAppearance(lineCount: liveActivityLineCount, fontScale: lyricsFontScale, highContrast: highContrastLyrics)
         }
         .alert("Não foi possível trocar o ícone", isPresented: Binding(
             get: { iconError != nil },

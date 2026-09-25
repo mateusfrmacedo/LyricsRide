@@ -19,6 +19,7 @@ struct LyricsActivityAttributes: ActivityAttributes {
         /// Optional so an activity already on screen from an older app version
         /// can still be decoded after the extension is updated.
         var displayLineCount: Int?
+        var fontScale: Double?
         var highContrast: Bool?
     }
 
