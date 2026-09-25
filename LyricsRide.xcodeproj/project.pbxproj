@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* LyricsRideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* LyricsRideApp.swift */; };
+		A10000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* ContentView.swift */; };
+		A10000000000000000000003 /* LyricsSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* LyricsSession.swift */; };
+		A10000000000000000000004 /* Lyric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* Lyric.swift */; };
+		A10000000000000000000005 /* LRCParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* LRCParser.swift */; };
+		A10000000000000000000006 /* LRCLibService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* LRCLibService.swift */; };
+		A10000000000000000000007 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* LiveActivityController.swift */; };
+		A10000000000000000000008 /* SpotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* SpotifyManager.swift */; };
+		A10000000000000000000009 /* LyricsActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* LyricsActivityAttributes.swift */; };
+		A10000000000000000000013 /* DriveModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* DriveModeManager.swift */; };
+		A10000000000000000000014 /* WidgetMusicState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* WidgetMusicState.swift */; };
+		A10000000000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* Assets.xcassets */; };
+		A10000000000000000000011 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = A90000000000000000000001 /* SpotifyiOS */; };
+		A10000000000000000000012 /* LyricsRideWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* LyricsRideWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B10000000000000000000001 /* LyricsRideWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* LyricsRideWidgets.swift */; };
+		B10000000000000000000002 /* LyricsActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* LyricsActivityAttributes.swift */; };
+		B10000000000000000000003 /* WidgetMusicState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* WidgetMusicState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A70000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B00000000000000000000001;
+			remoteInfo = LyricsRideWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A40000000000000000000004 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10000000000000000000012 /* LyricsRideWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* LyricsRideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsRideApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* LyricsSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsSession.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* Lyric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyric.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* LRCParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRCParser.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* LRCLibService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRCLibService.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* SpotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyManager.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* LyricsActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsActivityAttributes.swift; sourceTree = "<group>"; };
+		A20000000000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000011 /* LyricsRideWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LyricsRideWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000012 /* LyricsRide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsRide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000014 /* DriveModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveModeManager.swift; sourceTree = "<group>"; };
+		A20000000000000000000015 /* WidgetMusicState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetMusicState.swift; sourceTree = "<group>"; };
+		A20000000000000000000016 /* LyricsRide.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LyricsRide.entitlements; sourceTree = "<group>"; };
+		B20000000000000000000001 /* LyricsRideWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsRideWidgets.swift; sourceTree = "<group>"; };
+		B20000000000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B20000000000000000000003 /* LyricsRideWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LyricsRideWidgets.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A40000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000011 /* SpotifyiOS in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B40000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A30000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A30000000000000000000002 /* LyricsRide */,
+				A30000000000000000000005 /* LyricsRideWidgets */,
+				A30000000000000000000006 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A30000000000000000000002 /* LyricsRide */ = {
+			isa = PBXGroup;
+			children = (
+				A30000000000000000000003 /* App */,
+				A30000000000000000000004 /* Shared */,
+				A30000000000000000000007 /* Resources */,
+				A20000000000000000000016 /* LyricsRide.entitlements */,
+			);
+			path = LyricsRide;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* LyricsRideApp.swift */,
+				A20000000000000000000002 /* ContentView.swift */,
+				A20000000000000000000003 /* LyricsSession.swift */,
+				A20000000000000000000004 /* Lyric.swift */,
+				A20000000000000000000005 /* LRCParser.swift */,
+				A20000000000000000000006 /* LRCLibService.swift */,
+				A20000000000000000000007 /* LiveActivityController.swift */,
+				A20000000000000000000008 /* SpotifyManager.swift */,
+				A20000000000000000000014 /* DriveModeManager.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000004 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000009 /* LyricsActivityAttributes.swift */,
+				A20000000000000000000015 /* WidgetMusicState.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000005 /* LyricsRideWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000001 /* LyricsRideWidgets.swift */,
+				B20000000000000000000002 /* Info.plist */,
+				B20000000000000000000003 /* LyricsRideWidgets.entitlements */,
+			);
+			path = LyricsRideWidgets;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000006 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000012 /* LyricsRide.app */,
+				A20000000000000000000011 /* LyricsRideWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000007 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000010 /* Assets.xcassets */,
+				A20000000000000000000013 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* LyricsRide */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A60000000000000000000001 /* Build configuration list for PBXNativeTarget "LyricsRide" */;
+			buildPhases = (
+				A40000000000000000000001 /* Sources */,
+				A40000000000000000000002 /* Frameworks */,
+				A40000000000000000000003 /* Resources */,
+				A40000000000000000000004 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A80000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = LyricsRide;
+			packageProductDependencies = (
+				A90000000000000000000001 /* SpotifyiOS */,
+			);
+			productName = LyricsRide;
+			productReference = A20000000000000000000012 /* LyricsRide.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B00000000000000000000001 /* LyricsRideWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B60000000000000000000001 /* Build configuration list for PBXNativeTarget "LyricsRideWidgets" */;
+			buildPhases = (
+				B40000000000000000000001 /* Sources */,
+				B40000000000000000000002 /* Frameworks */,
+				B40000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LyricsRideWidgets;
+			productName = LyricsRideWidgets;
+			productReference = A20000000000000000000011 /* LyricsRideWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					B00000000000000000000001 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = A60000000000000000000000 /* Build configuration list for PBXProject "LyricsRide" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"pt-BR",
+			);
+			mainGroup = A30000000000000000000001;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A90000000000000000000002 /* XCRemoteSwiftPackageReference "ios-sdk" */,
+			);
+			productRefGroup = A30000000000000000000006 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* LyricsRide */,
+				B00000000000000000000001 /* LyricsRideWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A40000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000010 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B40000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A40000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* LyricsRideApp.swift in Sources */,
+				A10000000000000000000002 /* ContentView.swift in Sources */,
+				A10000000000000000000003 /* LyricsSession.swift in Sources */,
+				A10000000000000000000004 /* Lyric.swift in Sources */,
+				A10000000000000000000005 /* LRCParser.swift in Sources */,
+				A10000000000000000000006 /* LRCLibService.swift in Sources */,
+				A10000000000000000000007 /* LiveActivityController.swift in Sources */,
+				A10000000000000000000008 /* SpotifyManager.swift in Sources */,
+				A10000000000000000000009 /* LyricsActivityAttributes.swift in Sources */,
+				A10000000000000000000013 /* DriveModeManager.swift in Sources */,
+				A10000000000000000000014 /* WidgetMusicState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B40000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000001 /* LyricsRideWidgets.swift in Sources */,
+				B10000000000000000000002 /* LyricsActivityAttributes.swift in Sources */,
+				B10000000000000000000003 /* WidgetMusicState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A80000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B00000000000000000000001 /* LyricsRideWidgets */;
+			targetProxy = A70000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A61000000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A61000000000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A62000000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconGreen;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5W8ZGZP7DH;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LyricsRide/Resources/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mateus.lyricsride;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A62000000000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconGreen;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5W8ZGZP7DH;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LyricsRide/Resources/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mateus.lyricsride;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B62000000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5W8ZGZP7DH;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LyricsRideWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mateus.lyricsride.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B62000000000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5W8ZGZP7DH;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LyricsRideWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mateus.lyricsride.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A60000000000000000000000 /* Build configuration list for PBXProject "LyricsRide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A61000000000000000000000 /* Debug */,
+				A61000000000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A60000000000000000000001 /* Build configuration list for PBXNativeTarget "LyricsRide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A62000000000000000000000 /* Debug */,
+				A62000000000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B60000000000000000000001 /* Build configuration list for PBXNativeTarget "LyricsRideWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B62000000000000000000000 /* Debug */,
+				B62000000000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A90000000000000000000002 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spotify/ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A90000000000000000000001 /* SpotifyiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A90000000000000000000002 /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = SpotifyiOS;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A00000000000000000000001 /* Project object */;
+}

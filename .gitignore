@@ -1,0 +1,13 @@
+# Xcode user and build data
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+
+# macOS
+.DS_Store
+
+# Local credentials and provisioning material
+*.mobileprovision
+Secrets.plist
