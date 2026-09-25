@@ -217,31 +217,61 @@ private struct LockScreenLyricsContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
-                lyricText(previous, size: 18 * fontScale, color: .white.opacity(highContrast ? 0.82 : 0.52))
-                    .contentTransition(.opacity)
+                RisingLyricText(
+                    text: previous,
+                    identity: "previous-\(state.previousTimestamp ?? -1)-\(previous)",
+                    size: 18 * fontScale,
+                    color: .white.opacity(highContrast ? 0.82 : 0.52)
+                )
             }
 
-            lyricText(state.lyric, size: 26 * fontScale, color: .white, weight: .bold)
-                .id(state.lyricTimestamp ?? state.position)
-                .contentTransition(.opacity)
+            RisingLyricText(
+                text: state.lyric,
+                identity: "current-\(state.lyricTimestamp ?? state.position)-\(state.lyric)",
+                size: 26 * fontScale,
+                color: .white,
+                weight: .bold
+            )
 
             if lineCount >= 2, let next = state.nextLyric, !next.isEmpty {
-                lyricText(next, size: 18 * fontScale, color: .white.opacity(highContrast ? 0.9 : 0.68))
-                    .id(state.nextTimestamp.map { String(describing: $0) } ?? state.nextLyric)
-                    .transition(.push(from: .bottom).combined(with: .opacity))
+                RisingLyricText(
+                    text: next,
+                    identity: "next-\(state.nextTimestamp ?? -1)-\(next)",
+                    size: 18 * fontScale,
+                    color: .white.opacity(highContrast ? 0.9 : 0.68)
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.smooth(duration: 0.45), value: state.lyricTimestamp ?? state.position)
+        .animation(.spring(response: 0.62, dampingFraction: 0.9), value: state.lyricTimestamp ?? state.position)
     }
 
-    private func lyricText(_ text: String, size: CGFloat, color: Color, weight: Font.Weight = .medium) -> some View {
+}
+
+@available(iOS 18.0, *)
+private struct RisingLyricText: View {
+    let text: String
+    let identity: String
+    let size: CGFloat
+    let color: Color
+    var weight: Font.Weight = .medium
+
+    var body: some View {
         Text(text)
             .font(.system(size: size, weight: weight))
             .foregroundStyle(color)
             // Do not set lineLimit or a fixed height: every word remains visible.
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .id(identity)
+            .transition(
+                .asymmetric(
+                    insertion: .move(edge: .bottom).combined(with: .opacity),
+                    removal: .move(edge: .top).combined(with: .opacity)
+                )
+            )
+            .contentTransition(.opacity)
+            .animation(.spring(response: 0.62, dampingFraction: 0.9), value: identity)
     }
 }
 
