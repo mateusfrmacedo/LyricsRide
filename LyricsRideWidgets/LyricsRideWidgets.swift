@@ -170,7 +170,12 @@ private struct LockScreenLyricsView: View {
                     // The lyric chooses its natural height. This avoids clipping
                     // words just to hold the card at a fixed height; iOS still
                     // determines the final available Live Activity space.
-                    .frame(maxWidth: .infinity, minHeight: 112, alignment: .leading)
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: LockScreenLyricsContent.minimumHeight(for: state),
+                        alignment: .leading
+                    )
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 18)
                     .padding(.vertical, 8)
             }
@@ -214,6 +219,18 @@ private struct LockScreenLyricsContent: View {
     private var lineCount: Int { min(max(state.displayLineCount ?? 3, 1), 3) }
     private var fontScale: CGFloat { CGFloat(state.fontScale ?? 1.0) }
 
+    static func minimumHeight(for state: LyricsActivityAttributes.ContentState) -> CGFloat {
+        let lineCount = min(max(state.displayLineCount ?? 3, 1), 3)
+        let scale = CGFloat(state.fontScale ?? 1.0)
+        let baseHeight: CGFloat
+        switch lineCount {
+        case 1: baseHeight = 72
+        case 2: baseHeight = 128
+        default: baseHeight = 184
+        }
+        return baseHeight * scale
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if lineCount == 3, let previous = state.previousLyric, !previous.isEmpty {
@@ -243,6 +260,7 @@ private struct LockScreenLyricsContent: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
         .animation(.spring(response: 0.62, dampingFraction: 0.9), value: state.lyricTimestamp ?? state.position)
     }
 
